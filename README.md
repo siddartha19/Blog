@@ -5,7 +5,7 @@
 of the users are categorised into different types and is provided with a good interface to access the posts in the BLOG.
 
 
-# Here is the Fist version of the App
+### Here is the Fist version of the App
 
 ![BLOG](https://github.com/siddartha19/Blog/blob/master/Blog.png)
 
