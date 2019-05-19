@@ -1,7 +1,7 @@
 # Blog
 
 ### App Overview
-> TThis application allows a user to login using their gmail and allow him to post any news in the BLOG. The all posts
+> This application allows a user to login using their gmail and allow him to post any news in the BLOG. The all posts
 of the users are categorised into different types and is provided with a good interface to access the posts in the BLOG.
 
 
