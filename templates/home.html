@@ -1,0 +1,178 @@
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style type="text/css">
+  	.upic{
+  		width: 50px;
+  		height: 50px;
+  		border-radius: 50%;
+  		float: right;
+  	}
+  	.lbtn{
+		font-size: 25px;
+		margin: 5px;
+		color: white;
+		float: right;
+		margin-top: -5px;
+		opacity: 0.8;
+	}
+	.lbtn:hover{
+		opacity: 1;
+	}
+	.container{
+		margin-top: -60px;
+		width: 70%;
+		border: 5px solid rgba(0,0,0,0.3);
+		margin-bottom: 50px;
+		border-radius: 10px;
+	}
+	.title-bar{
+    	background-color: #f8fbff;
+    	padding: 20px;
+    	height: 80px;
+    	align-items: center;
+    	border-radius: .3rem .3rem 0 0;
+	}
+	.title{
+		line-height: 1;
+		font-size: 30px;
+    	color: #444;
+    	margin-left: 10px;
+	}
+	.header{
+		padding: 20px;
+	}
+	.second_title{
+		font-size: 25px;
+		margin-right: 20px;
+	}
+	#sort_icon{
+		margin-top: 10px;
+		width: 30px;
+		height: 40px;
+		margin-right: 15px;
+	}
+	.btn{
+		margin-bottom: 10px;
+		background-color: #4794dd;
+		color: white;
+	}
+	a,a:hover{
+		text-decoration: none;
+		color: rgba(0,0,0,0.7);
+	}
+	.sidebar{
+		list-style: none;
+		font-size: 20px;
+		padding-left: 0;
+	}
+	.sidebar-items{
+		width: 100%;
+		height: 60px;
+		padding: 20px;
+		cursor: pointer;
+	}
+	.sidebar-items:hover{
+		background-color: white;
+	}
+	.main-content:hover{
+		background-color: #f8fbff;
+	}
+	.post_name{
+		font-size: 25px;
+		padding: 20px;
+	}
+	.post_rating{
+		padding: 20px;
+		padding-top: 0;
+		float: left;
+	}
+	.post_type{
+		float: right;
+		padding: 20px;
+		padding-top: 0;
+	}
+	footer{
+		font-size: 15px;
+		padding-top: 2px;
+		height: 33px;
+		font-weight: bold;
+		background-color: #eef5fd;
+	}
+  </style>
+
+  <script>
+	$(document).ready(function(){
+		 $('[data-toggle="tooltip"]').tooltip(); 
+	});
+  </script>
+
+</head>
+
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename = 'styles.css')}}">
+
+<body>
+
+<div class="" style="border: 0px solid; padding: 0;">
+	<div class="title-bar">
+			<span style="width: 25px; height: 30px; color: #4794dd; font-size: 30px; margin-top: 5px; margin-bottom: 5px;" class="material-icons">mails</span>
+			<span class="title">Posts</span>
+		{% if not name %}
+			<button class="btn lbtn">
+				<a style="color: white;" href="{{url_for('showLogin') }}">Login</a>
+			</button>
+		{% else %}
+			<button class="btn lbtn">
+				<a style="color: white;" href="{{url_for('gdisconnect') }}">Logout</a>
+			</button>
+		{% endif %}
+	</div>
+	<div class="header">
+		<i class="material-icons" id="sort_icon">sort</i>
+		<span class="second_title">Post List</span>
+		<a href="{{url_for('newPosts') }}">
+			<button class="btn btn-primary">Create new</button>
+		</a>
+		{% if name %}
+			<img data-toggle="tooltip" data-placement="left" title="UserName : {{ name }}" class="upic" src="{{ picture }}">
+		{% endif %}
+	</div>
+	<div class="main-body" style="margin-left: 15px; margin-right: 15px;">
+		<div class="row">
+			<div class="col-lg-2" style="background-color: #eef5fd; padding: 0; height: 420px;">
+				<ul class="sidebar">
+					<li class="sidebar-items">Latest</li>
+					<li class="sidebar-items">Popular</li>
+					<li class="sidebar-items">Technical</li>
+					<li class="sidebar-items">Entertainment</li>
+					<li class="sidebar-items">Sports</li>
+				</ul>
+			</div>
+			<div class="col-lg-10" style="height: 400px;overflow-y: scroll;">
+				{% for i in allposts %}
+					<a  href="{{url_for('fullPosts', post_id = i.id) }}">
+						<div class="row main-content">
+							<p class="post_name">{{ i.name }}</p>
+							<p class="post_rating">Rating: {{ i.ratings }} Star</p>
+							<p class="post_type">Type: {{ i.post_type }}</p>
+						</div>
+					</a>	
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+</div>
+
+<footer>
+	<p class="text-center">&copy; copyrights, Chandu Siddartha</p>
+</footer>
+
+</body>
+
+</html>
