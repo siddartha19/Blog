@@ -4,12 +4,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>  
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-    <script src="//apis.google.com/js/platform.js?onload=start"> </script>
+ 
+    <meta name="google-signin-client_id" content="423280317679-tfetiei016pkbvccjcvse2aku7v6l1qm.apps.googleusercontent.com">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://apis.google.com/js/client:platform.js?onload=start" async defer></script>
+
+<script>
+  function start() {
+    gapi.load('auth2', function() {
+      auth2 = gapi.auth2.init({
+        client_id: '423280317679-tfetiei016pkbvccjcvse2aku7v6l1qm.apps.googleusercontent.com'
+      });
+    });
+  }
+</script>
     <style type="text/css">
     body{
       font-family: 'DrawnBody', Arial, Helvetica, sans-serif;
@@ -62,8 +70,8 @@
     <span class="g">G</span>
     <span class="exc">!</span>
   </p>
-  <div id="mb" class="g-signin"
-    data-scope="profile email"
+  <div class="g-signin2" data-longtitle="true" data-onsuccess="onSignIn"   
+    data-scope="profile openid email"
     data-clientid="423280317679-tfetiei016pkbvccjcvse2aku7v6l1qm.apps.googleusercontent.com"
     data-redirecturi="postmessage"
     data-accesstype="offline"
@@ -75,35 +83,36 @@
 
   <div id="result"></div>
 
-
-<script>
-function signInCallback(authResult) {
-  if (authResult['code']) {
-    $('#signinButton').attr('style', 'display: none');
-    $.ajax({
-      type: 'POST',
-      url: '/gconnect?state={{STATE}}',
-      processData: false,
-      data: authResult['code'],
-      contentType: 'application/octet-stream; charset=utf-8',
-      success: function(result) {
-        if (result) {
-          $('#result').html(''+ result + ' ')
-         setTimeout(function() {
-          window.location.href = "/posts";
-         }, 4000);
-        } 
-        else if (authResult['error']) {
-          console.log('There was an error: ' + authResult['error']);
+     <script>
+      $('#signinButton').click(function() {
+        function signInCallback(authResult){
+          if (authResult['code']){
+            $('#signinButton').attr('style', 'display: none');
+            $.ajax({
+              type: 'POST',
+              url: '/gconnect?state={{STATE}}',
+              headers: {
+              'X-Requested-With': 'XMLHttpRequest'
+              },
+              contentType: 'application/octet-stream; charset=utf-8',
+              success:function(result){
+                $('#result').html('Login Successful!</br>'+ result + '</br>Redirecting...')
+                     setTimeout(function() {
+                      window.location.href = "/";
+                     }, 2000);
+              },
+              processData:false,
+              data:authResult['code']
+            });
+          } else{
+            // handle error
+            console.log('There was an error: ' + authResult['error']);
+            $('#result').html('Failed to make a server-side call. Check your configuration and console.');
+          }
         }
-        else {
-          $('#result').html('Failed to make a server-side call. Check your configuration and console.');
-        }
-      }
-  });
- } 
-}
-</script>
+        auth2.grantOfflineAccess().then(signInCallback);
+      });
+    </script>
 
 
 
